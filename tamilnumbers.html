@@ -1,0 +1,79 @@
+<!-- Copyright: Raman.P (raamanp@gmail.com) This is a freesoftware released under GPL v3 -->
+<HTML>
+<head>
+<title>Tamil Numeral </title>
+</head>
+<body>
+<p>Enter the Number <input id="modern" size=4 type=integer>
+<button onClick='calldoConvertToTamil()'>Convert into Tamil numerals </button> </p>
+<div id=tamil></div>
+</p>
+<script type='text/javascript'>
+	function calldoConvertToTamil(){
+	var modern=document.getElementById('modern').value;
+	var tn='';
+		if (modern <=0){
+		document.getElementById("tamil").innerHTML="Number should be above 0";
+		return;
+		}
+	else if (modern >999999){
+
+		document.getElementById("tamil").innerHTML="Number should be below 9999";
+		return;
+		
+		}
+		tn=doConvertToTamil(modern);
+		document.getElementById("tamil").innerHTML='<bold>Tamil Numeral:<h2>'+tn+'</h2></bold>';
+
+	}
+
+	function doConvertToTamil(modern) {
+	var tn='';
+	var ptn='';
+	var p=0;
+	var value_array= new Array();
+	var unit_array=["x","&#3047","&#3048","&#3049","&#3050","&#3051","&#3052","&#3053","&#3054","&#3055"];
+	var tens_array=["y","&#3056","&#3057","&#3058"];
+
+		if (modern>9999){
+			/*Call the function recursively */
+			p=parseInt(modern/1000);
+			ptn=doConvertToTamil(p);
+			/*Suffix the return value with symbol for 1000 */
+			ptn=ptn+tens_array[3];
+			modern=modern%1000;
+			}
+		
+		while (modern>0){
+			rem=modern%10;
+			value_array.push(rem);
+			modern=parseInt(modern/10);
+			}
+		
+		for(i=0;i<value_array.length;i++){
+			/*If value is zero nothing to do continue*/
+				if (value_array[i]==0){
+					continue;
+					}
+			 /*if i=0 then it is unit position 
+			   no prefix needed */
+				if (i == 0 ){
+				tn=unit_array[value_array[i]]+tn;
+				}
+				else {
+				/*now we are in 10 or 100 or 1000th place*/
+				/*if value is 1 just take prefix */
+				if (value_array[i]==1){
+					tn=tens_array[i]+tn;
+					}
+					else{
+				tn=unit_array[value_array[i]]+tens_array[i]+tn;
+					}
+				}
+			}
+			tn=ptn+tn;
+		return tn;
+	}
+	</script>
+</body>
+</html>
